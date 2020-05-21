@@ -1,5 +1,6 @@
 <?php
-class Abonne
+include "iDao.class.php";
+class Abonne extends Idao
 {
     //POJO  
     private $nom;

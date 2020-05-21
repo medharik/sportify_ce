@@ -1,12 +1,12 @@
 <?php
 include("imetier.php");
 // :: acces static / const
-
 class Idao implements Imetier
 {
 
     public static $cnx; // variable de classe
     public static  $table = "abonnes";
+    public const MAX_UPLOAD_SIZE = 8 * 1024 * 1924;
     public static  function connect_db()
     //pattern singleton (une seule instance (creer une seule fois))
     {
@@ -76,7 +76,6 @@ class Idao implements Imetier
     }
     public static     function store(array $data)
     {
-
         $str_cles = join(",", array_keys($data));
         $inter = function ($value) {
             return '?';
@@ -88,5 +87,34 @@ class Idao implements Imetier
         } catch (PDOException $e) {
             die("Erreur d'ajout de " . static::$table . " " . $e->getMessage());
         }
+    }
+
+    // upload = televersement de fichier 
+    //$infos=$_FILES['chemin']
+    public  static  function uploader($infos, $dossier = "images")
+    {
+        if (!is_dir($dossier)) {
+            mkdir($dossier, 777, true);
+        }
+        $tmp = $infos['tmp_name'];
+        $nom = $infos['name'];
+        $path_parts = pathinfo($nom);
+        //var_dump($path_parts);
+        $ext = strtolower($path_parts["extension"]);
+        $new_name = md5(date('YmdHis') . '_' . rand(0, 9999)) . '.' . $ext;
+        $autorise = ['jpg', 'png', 'jpeg', 'gif', 'mp4'];
+        $chemin = "$dossier/$new_name";
+        if (!in_array($ext, $autorise)) {
+            die("Ce n'est pas une image");
+        }
+        $taille = filesize($tmp); // retourne la taille du fichier en octect
+        if ($taille > self::MAX_UPLOAD_SIZE) {
+            die("Veulliez choisir un fichier de taille < 8Mo");
+        }
+        if (!move_uploaded_file($tmp, $chemin)) {
+            die("Probleme d'upload de l'image");
+        };
+
+        return $chemin;
     }
 }

@@ -1,8 +1,14 @@
 <?php
+include "helper.php";
 include "iDao.class.php";
 class Abonne extends Idao
 {
+
+use  Helper_date;
+
     //POJO  
+
+
     private $nom;
     private $prenom;
     private $date_naissance;

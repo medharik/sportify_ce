@@ -50,9 +50,9 @@ $abonnes = Abonne::all();
                                 <td scope="col"><?= $a->nom ?> <?= $a->prenom ?></td>
                                 <td scope="col"><?= $a->cin ?></td>
                                 <td><?= $a->profession ?></td>
-                                <td><a href="" class="btn btn-sm btn-danger">S</a>
-                                    <a href="" class="btn btn-sm btn-warning">M</a>
-                                    <a href="" class="btn btn-sm btn-info">C</a></td>
+                                <td><a onclick="return confirm('supprimer? ')" href="controller.php?action=delete&id=<?= $a->id ?>" class="btn btn-sm btn-danger">S</a>
+                                    <a href="_form.php?id=<?= $a->id ?>" class="btn btn-sm btn-warning">M</a>
+                                    <a href="show.php?id=<?= $a->id ?>" class="btn btn-sm btn-info">C</a></td>
                             </tr>
                         <?php } ?>
 

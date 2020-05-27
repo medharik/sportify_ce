@@ -3,10 +3,14 @@ include("imetier.php");
 // :: acces static / const
 class Idao implements Imetier
 {
-
+ //INJECTION SQL    
+//XSS : CROSS SITE SCRIPTING
+//CSRF
+//FIXATION de SESSION
+   // use Helper;
     public static $cnx; // variable de classe
     public static  $table = "abonnes";
-    public const MAX_UPLOAD_SIZE = 8 * 1024 * 1924;
+    public const MAX_UPLOAD_SIZE = 8 * 1024 * 1024;
     public static  function connect_db()
     //pattern singleton (une seule instance (creer une seule fois))
     {
@@ -27,7 +31,7 @@ class Idao implements Imetier
             //     }
         }
     }
-    public  static   function destroy($id)
+    public  static   function delete($id)
     {
         try {
             $rp = self::$cnx->prepare("delete from  " . static::$table . "  where id=?");
@@ -52,7 +56,7 @@ class Idao implements Imetier
     public  static function find($id, $nom_id = "id")
     {
         try {
-            $rp = self::$cnx->prepare("select * from " . static::$table . " where $nom_id=? ");
+            $rp = self::$cnx->prepare("select * from " . self::$table . " where $nom_id=? ");
             $rp->execute([$id]);
             $resultat =  $rp->fetch();
             return $resultat;
@@ -73,6 +77,20 @@ class Idao implements Imetier
     }
     public  static  function update(array $data, int $id)
     {
+        $str_cles = join(",", array_keys($data));
+        $inter = function ($value) {
+            return "$value=?";
+        };
+        $intero  = join(",", array_map($inter, array_keys($data) ));//nom=?, prenom=? 
+        try {
+            $rp = self::$cnx->prepare(" update  " . static::$table . " set $intero  where id=?");
+           // echo " update  " . static::$table . " set $intero  where id=?";
+            $values=array_values($data);//['ali','rim']
+            $values[]=$id;///['ali','rim',1]
+            $rp->execute($values);
+        } catch (PDOException $e) {
+            die("Erreur  de modification de " . static::$table . " " . $e->getMessage());
+        }
     }
     public static     function store(array $data)
     {

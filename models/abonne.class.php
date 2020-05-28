@@ -8,7 +8,7 @@ use  Helper_date;
 
     //POJO  
 
-
+public $id;
     private $nom;
     private $prenom;
     private $date_naissance;
@@ -18,7 +18,7 @@ use  Helper_date;
     private $photo;
     private $cin;
     //constructor 
-    function __construct($nom, $prenom, $date_naissance, $profession = null, $sexe, $inscrit_le = "", $photo = "", $cin)
+    function __construct($nom="", $prenom="", $date_naissance="", $profession = null, $sexe="", $inscrit_le = "", $photo = "", $cin="")
     {
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -55,5 +55,18 @@ use  Helper_date;
     public function afficher()
     {
         print "$this->nom $this->prenom<br>";
+    }
+    //one (abonne) to many (paiement)
+    public   function paiements()
+    {
+        try {
+            $rp = self::$cnx->prepare("select * from  paiements  where abonne_id=? order by id desc");
+            $rp->execute([ $this->id]);
+            $resultat =  $rp->fetchAll();
+
+            return $resultat;
+        } catch (PDOException $e) {
+            die("erreur de  recuperation dans  " . static::$table . " dans  la base de donnees " . $e->getMessage());
+        }
     }
 }

@@ -5,7 +5,7 @@ class Idao implements Imetier
 {
  //INJECTION SQL    
 //XSS : CROSS SITE SCRIPTING
-//CSRF
+//CSRF 
 //FIXATION de SESSION
    // use Helper;
     public static $cnx; // variable de classe
@@ -56,7 +56,8 @@ class Idao implements Imetier
     public  static function find($id, $nom_id = "id")
     {
         try {
-            $rp = self::$cnx->prepare("select * from " . self::$table . " where $nom_id=? ");
+            $rp = self::$cnx->prepare("select * from " . static::$table . " where $nom_id=? ");
+            // echo "select * from " . self::$table . " where $nom_id=$id ";
             $rp->execute([$id]);
             $resultat =  $rp->fetch();
             return $resultat;

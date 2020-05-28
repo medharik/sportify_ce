@@ -1,7 +1,7 @@
 <?php
-include "../../models/abonne.class.php";
+include "../../models/paiement.class.php";
 Idao::connect_db();
-$abonnes = Abonne::all();
+$paiements = Paiement::all();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,7 @@ $abonnes = Abonne::all();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>liste des abonnés</title>
+    <title>liste des paiements</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <!-- Bootstrap core CSS -->
     
@@ -34,43 +34,49 @@ $abonnes = Abonne::all();
 
             <div class="container-fluid">
           <div class="text-right">
-          <a href="<?=BASE_URL?>abonnes/_form.php" class="btn btn-sm btn-warning my-1">
+          <a href="<?=BASE_URL?>paiements/_form.php" class="btn btn-sm btn-warning my-1">
             Nouveau
             </a>
           </div>
-                <h3 class="mt-4 text-center text-primary">Liste des abonnés </h3>
+                <h3 class="mt-4 text-center text-primary">Liste des paiements </h3>
                 <table class="table table-striped">
                     <thead class="bg-dark  text-white">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Photo</th>
-                            <th scope="col">Nom/Prenom</th>
-                            <th scope="col">Cin</th>
-                            <th>Profession</th>
-                            <th>Paiements</th>
+                            <th scope="col">User_id</th>
+                            <th scope="col">Abonne id</th>
+                            <th scope="col">Date de </th>
+                            <th>Date a </th>
+                            <th>Tarif </th>
+                            <th>Remise</th>
+                            <th>Montant</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($abonnes as $a) { ?>
+                        <?php foreach ($paiements as $p) { 
+                            
+                            $paie=new Paiement();
+                            $paie->user_id=$p->user_id;
+                            $paie->abonne_id=$p->abonne_id;
+                            
+                            ?>
                             <tr>
-                                <td scope="col"><?= $a->id ?></td>
-                                <td scope="col"><img src="<?= $a->photo ?>" class="img-fluid rounded img-thumbnal" width="150"></td>
-                                <td scope="col"><?= $a->nom ?> <?= $a->prenom ?></td>
-                                <td scope="col"><?= $a->cin ?></td>
-                                <td><?= $a->profession ?></td>
-                                <td><?php 
-                                $abonne=new Abonne();
-                                $abonne->id=$a->id;
-                                $p=$abonne->paiements();
-                                if(count($p)>0)
-                                echo "Doit payer le  ".$p[0]->date_a;
-                                else echo "Aucun paiement";
+                                <td scope="col"><?= $p->id ?></td>
+                                <td scope="col">
+                                <?= $paie->user()->login; ?>
                                 
-                                ?></td>
-                                <td><a onclick="return confirm('supprimer? ')" href="controller.php?action=delete&id=<?= $a->id ?>" class="btn btn-sm btn-danger">S</a>
-                                    <a href="_form.php?id=<?= $a->id ?>" class="btn btn-sm btn-warning">M</a>
-                                    <a href="show.php?id=<?= $a->id ?>" class="btn btn-sm btn-info">C</a></td>
+                             </td>
+                                <td scope="col">
+                                <?= $paie->abonne()->nom; ?>  <?= $paie->abonne()->prenom; ?></td>
+                                <td><?= $p->date_de ?></td>
+                                <td><?= $p->date_a ?></td>
+                                <td><?= $p->tarif_mois ?></td>
+                                <td><?= $p->remise ?></td>
+                                <td><?= $p->tarif_mois*2 ?></td>
+                                <td><a onclick="return confirm('supprimer? ')" href="controller.php?action=delete&id=<?= $p->id ?>" class="btn btn-sm btn-danger">S</a>
+                                    <a href="_form.php?id=<?= $p->id ?>" class="btn btn-sm btn-warning">M</a>
+                                    <a href="show.php?id=<?= $p->id ?>" class="btn btn-sm btn-info">C</a></td>
                             </tr>
                         <?php } ?>
 

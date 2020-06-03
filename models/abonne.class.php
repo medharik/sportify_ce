@@ -1,14 +1,17 @@
 <?php
-include "helper.php";
-include "iDao.class.php";
+spl_autoload_register(function ($class) {
+    include(strtolower($class) . ".class.php");
+});
+// include "helper.php";
+// include "iDao.class.php";
 class Abonne extends Idao
 {
 
-use  Helper_date;
+    use  Helper_date;
 
     //POJO  
 
-public $id;
+    public $id;
     private $nom;
     private $prenom;
     private $date_naissance;
@@ -18,8 +21,9 @@ public $id;
     private $photo;
     private $cin;
     //constructor 
-    function __construct($nom="", $prenom="", $date_naissance="", $profession = null, $sexe="", $inscrit_le = "", $photo = "", $cin="")
+    function __construct($id = 0, $nom = "", $prenom = "", $date_naissance = "", $profession = null, $sexe = "", $inscrit_le = "", $photo = "", $cin = "")
     {
+        $this->id = $id;
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->$date_naissance = $date_naissance;
@@ -29,6 +33,8 @@ public $id;
         $this->$photo = $photo;
         $this->cin = $cin;
     }
+
+
     //getter
     public function nom()
     {
@@ -61,7 +67,7 @@ public $id;
     {
         try {
             $rp = self::$cnx->prepare("select * from  paiements  where abonne_id=? order by id desc");
-            $rp->execute([ $this->id]);
+            $rp->execute([$this->id]);
             $resultat =  $rp->fetchAll();
 
             return $resultat;

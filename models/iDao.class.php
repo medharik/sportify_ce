@@ -1,13 +1,16 @@
 <?php
 include("imetier.php");
+include("helper.php");
 // :: acces static / const
 class Idao implements Imetier
 {
- //INJECTION SQL    
-//XSS : CROSS SITE SCRIPTING
-//CSRF 
-//FIXATION de SESSION
-   // use Helper;
+
+
+    //INJECTION SQL    
+    //XSS : CROSS SITE SCRIPTING
+    //CSRF 
+    //FIXATION de SESSION
+    // use Helper;
     public static $cnx; // variable de classe
     public static  $table = "abonnes";
     public const MAX_UPLOAD_SIZE = 8 * 1024 * 1024;
@@ -82,12 +85,12 @@ class Idao implements Imetier
         $inter = function ($value) {
             return "$value=?";
         };
-        $intero  = join(",", array_map($inter, array_keys($data) ));//nom=?, prenom=? 
+        $intero  = join(",", array_map($inter, array_keys($data))); //nom=?, prenom=? 
         try {
             $rp = self::$cnx->prepare(" update  " . static::$table . " set $intero  where id=?");
-           // echo " update  " . static::$table . " set $intero  where id=?";
-            $values=array_values($data);//['ali','rim']
-            $values[]=$id;///['ali','rim',1]
+            // echo " update  " . static::$table . " set $intero  where id=?";
+            $values = array_values($data); //['ali','rim']
+            $values[] = $id; ///['ali','rim',1]
             $rp->execute($values);
         } catch (PDOException $e) {
             die("Erreur  de modification de " . static::$table . " " . $e->getMessage());

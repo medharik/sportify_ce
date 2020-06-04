@@ -23,6 +23,7 @@ class Abonne extends Idao
     //constructor 
     function __construct($id = 0, $nom = "", $prenom = "", $date_naissance = "", $profession = null, $sexe = "", $inscrit_le = "", $photo = "", $cin = "")
     {
+        // echo "je suis le constructeur de abonne";
         $this->id = $id;
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -68,11 +69,27 @@ class Abonne extends Idao
         try {
             $rp = self::$cnx->prepare("select * from  paiements  where abonne_id=? order by id desc");
             $rp->execute([$this->id]);
+            $rp->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Paiement');
+
             $resultat =  $rp->fetchAll();
 
             return $resultat;
         } catch (PDOException $e) {
-            die("erreur de  recuperation dans  " . static::$table . " dans  la base de donnees " . $e->getMessage());
+            die("erreur de  recuperation dans  paiements  dans  la base de donnees " . $e->getMessage());
+        }
+    }
+    // override  (redefinition)
+    public  static function find($id, $nom_id = "id")
+    {
+        try {
+            $rp = self::$cnx->prepare("select * from " . static::$table . " where $nom_id=? ");
+            // echo "select * from " . self::$table . " where $nom_id=$id ";
+            $rp->execute([$id]);
+            $rp->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, __CLASS__);
+            $resultat =  $rp->fetch();
+            return $resultat;
+        } catch (PDOException $e) {
+            die("erreur de  recuperation (find) dans  " . static::$table . " dans  la base de donnees " . $e->getMessage());
         }
     }
 }

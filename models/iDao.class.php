@@ -13,6 +13,7 @@ class Idao implements Imetier
     // use Helper;
     public static $cnx; // variable de classe
     public static  $table = "abonnes";
+    public static  $class = "Abonne";
     public const MAX_UPLOAD_SIZE = 8 * 1024 * 1024;
     public static  function connect_db()
     //pattern singleton (une seule instance (creer une seule fois))
@@ -49,6 +50,8 @@ class Idao implements Imetier
         try {
             $rp = self::$cnx->prepare("select * from " . static::$table . " order by id  desc");
             $rp->execute();
+            $rp->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, static::$class);
+
             $resultat =  $rp->fetchAll();
 
             return $resultat;
@@ -62,6 +65,8 @@ class Idao implements Imetier
             $rp = self::$cnx->prepare("select * from " . static::$table . " where $nom_id=? ");
             // echo "select * from " . self::$table . " where $nom_id=$id ";
             $rp->execute([$id]);
+            $rp->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, static::$class);
+            // echo "la classe " . __CLASS__;
             $resultat =  $rp->fetch();
             return $resultat;
         } catch (PDOException $e) {
@@ -73,6 +78,8 @@ class Idao implements Imetier
         try {
             $rp = self::$cnx->prepare("select * from " . static::$table . " where $condition ");
             $rp->execute();
+            $rp->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, static::$class);
+
             $resultat =  $rp->fetchAll();
             return $resultat;
         } catch (PDOException $e) {

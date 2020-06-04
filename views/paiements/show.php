@@ -3,9 +3,9 @@
     Idao::connect_db();
     $id = $_GET['id']; //?id=9
     $paiement = Paiement::find($id);
-    $paie = new Paiement($paiement->user_id, $paiement->abonne_id);
-    $abonne = $paie->abonne();
-    $user = $paie->user();
+    // $paie = new Paiement($paiement->user_id, $paiement->abonne_id);
+    $abonne = $paiement->abonne();
+    $user = $paiement->user();
     ?>
   <!DOCTYPE html>
   <html lang="en">

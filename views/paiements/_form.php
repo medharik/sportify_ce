@@ -3,8 +3,6 @@ spl_autoload_register(function ($class) {
     include("../../models/" . strtolower($class) . ".class.php");
 });
 Idao::connect_db();
-
-
 $action = "store";
 $titre = "Nouvel paiement";
 // $paiement = Paiement::find(7);

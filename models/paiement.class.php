@@ -9,6 +9,7 @@ class Paiement extends Idao
     public $abonne_id;
     use Helper_date;
     public static $table = "paiements";
+    public static $class = "Paiement";
 
     function __construct($user_id = 0, ?int $abonne_id = 0)
     {

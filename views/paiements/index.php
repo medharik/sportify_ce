@@ -14,7 +14,7 @@ $paiements = Paiement::all();
     <title>liste des paiements</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <!-- Bootstrap core CSS -->
-    
+
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
@@ -33,11 +33,11 @@ $paiements = Paiement::all();
             <?php include "../_menu.php"; ?>
 
             <div class="container-fluid">
-          <div class="text-right">
-          <a href="<?=BASE_URL?>paiements/_form.php" class="btn btn-sm btn-warning my-1">
-            Nouveau
-            </a>
-          </div>
+                <div class="text-right">
+                    <a href="<?= BASE_URL ?>paiements/_form.php" class="btn btn-sm btn-warning my-1">
+                        Nouveau
+                    </a>
+                </div>
                 <h3 class="mt-4 text-center text-primary">Liste des paiements </h3>
                 <table class="table table-striped">
                     <thead class="bg-dark  text-white">
@@ -54,26 +54,25 @@ $paiements = Paiement::all();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($paiements as $p) { 
-                            
-                            $paie=new Paiement();
-                            $paie->user_id=$p->user_id;
-                            $paie->abonne_id=$p->abonne_id;
-                            
-                            ?>
+                        <?php foreach ($paiements as $p) {
+
+                            $abonne = $p->abonne();
+                            $user = $p->user();
+
+                        ?>
                             <tr>
                                 <td scope="col"><?= $p->id ?></td>
                                 <td scope="col">
-                                <?= $paie->user()->login; ?>
-                                
-                             </td>
+                                    <?= $user->login; ?>
+
+                                </td>
                                 <td scope="col">
-                                <?= $paie->abonne()->nom; ?>  <?= $paie->abonne()->prenom; ?></td>
+                                    <?= $abonne->nom; ?> <?= $abonne->prenom; ?></td>
                                 <td><?= $p->date_de ?></td>
                                 <td><?= $p->date_a ?></td>
                                 <td><?= $p->tarif_mois ?></td>
                                 <td><?= $p->remise ?></td>
-                                <td><?= $p->tarif_mois*2 ?></td>
+                                <td><?= $p->tarif_mois * 2 ?></td>
                                 <td><a onclick="return confirm('supprimer? ')" href="controller.php?action=delete&id=<?= $p->id ?>" class="btn btn-sm btn-danger">S</a>
                                     <a href="_form.php?id=<?= $p->id ?>" class="btn btn-sm btn-warning">M</a>
                                     <a href="show.php?id=<?= $p->id ?>" class="btn btn-sm btn-info">C</a></td>
@@ -101,13 +100,13 @@ $paiements = Paiement::all();
         });
     </script>
     <script>
-    $(document).ready( function () {
-    $('.table').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-        }
-    } );
-} );
+        $(document).ready(function() {
+            $('.table').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            });
+        });
     </script>
 </body>
 

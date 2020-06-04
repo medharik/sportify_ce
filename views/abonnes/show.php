@@ -4,7 +4,7 @@
     $id = $_GET['id']; //?id=9
     $abonne = Abonne::find($id);
     // $abonne_obj = new Abonne($id);
-    $abonne_obj = new Abonne($id);
+    // $abonne_obj = new Abonne($id);
 
 
     ?>
@@ -73,22 +73,20 @@
                           <tbody>
                               <?php
 
-                                $paiements = $abonne_obj->paiements();;
+                                $paiements = $abonne->paiements();;
                                 foreach ($paiements as $p) {
 
-                                    $paie = new Paiement();
-                                    $paie->user_id = $p->user_id;
-                                    $paie->abonne_id = $p->abonne_id;
+
 
                                 ?>
                                   <tr>
                                       <td scope="col"><?= $p->id ?></td>
                                       <td scope="col">
-                                          <?= $paie->user()->login; ?>
+                                          <?= $p->user()->login; ?>
 
                                       </td>
                                       <td scope="col">
-                                          <?= $paie->abonne()->nom; ?> <?= $paie->abonne()->prenom; ?></td>
+                                          <?= $p->abonne()->nom; ?> <?= $p->abonne()->prenom; ?></td>
                                       <td><?= $p->date_de ?></td>
                                       <td><?= $p->date_a ?></td>
                                       <td><?= $p->tarif_mois ?></td>

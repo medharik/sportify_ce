@@ -33,4 +33,9 @@ include("models/paiement.class.php");
 
 Idao::connect_db();
 // echo  Paiement::$table;
-Paiement::store($_POST);
+$b = Abonne::find(15);
+// $b1 = new Abonne();
+// $b1->id = 15;
+//echo $b->id;
+$p = $b->paiements();
+var_dump($p);

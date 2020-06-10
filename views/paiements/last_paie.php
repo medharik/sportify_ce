@@ -1,7 +1,7 @@
 <?php
 include "../../models/paiement.class.php";
 Idao::connect_db();
-$paiements = Paiement::all();
+$paiements = Paiement::last_paie();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +38,7 @@ $paiements = Paiement::all();
                         Nouveau
                     </a>
                 </div>
-                <h3 class="mt-4 text-center text-primary">Liste des paiements </h3>
+                <h3 class="mt-4 text-center text-primary">Liste des dernieres paiements </h3>
                 <table class="table table-striped">
                     <thead class="bg-dark  text-white">
                         <tr>

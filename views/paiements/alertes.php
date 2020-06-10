@@ -1,7 +1,7 @@
 <?php
 include "../../models/paiement.class.php";
 Idao::connect_db();
-$paiements = Paiement::all();
+$paiements = Paiement::last_paie();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +38,7 @@ $paiements = Paiement::all();
                         Nouveau
                     </a>
                 </div>
-                <h3 class="mt-4 text-center text-primary">Liste des paiements </h3>
+                <h3 class="mt-4 text-center text-primary">Les alertes de paiement </h3>
                 <table class="table table-striped">
                     <thead class="bg-dark  text-white">
                         <tr>
@@ -62,51 +62,53 @@ $paiements = Paiement::all();
                             $user = $p->user();
 
                         ?>
-                            <tr>
-                                <td scope="col"><?= $p->id ?></td>
-                                <td scope="col">
-                                    <?= $user->login; ?>
+                            <?php $duree = Paiement::date_diff(date('Y-m-d'), $p->date_a);
+                            $classe = "bg-success";
+                            $retard = "il reste  $duree j";
+                            if ($duree < 0) {
+                                $classe = "bg-danger text-white";
+                                $retard = "retard de $duree j";
+                            }
+                            if ($duree < 0) {
+                            ?>
+                                <tr>
+                                    <td scope="col"><?= $p->id ?></td>
+                                    <td scope="col">
+                                        <?= $user->login; ?>
 
-                                </td>
-                                <td scope="col">
-                                    <?= $abonne->nom; ?> <?= $abonne->prenom; ?></td>
-                                <td><?= Paiement::date_fr($p->date_de) ?></td>
-                                <td><?= Paiement::date_fr($p->date_a) ?></td>
-                                <td><?php
+                                    </td>
+                                    <td scope="col">
+                                        <?= $abonne->nom; ?> <?= $abonne->prenom; ?></td>
+                                    <td><?= Paiement::date_fr($p->date_de) ?></td>
+                                    <td><?= Paiement::date_fr($p->date_a) ?></td>
+                                    <td><?php
 
-                                    $n_jours =  Paiement::date_diff($p->date_de, $p->date_a);
+                                        $n_jours =  Paiement::date_diff($p->date_de, $p->date_a);
 
 
-                                    $n_mois = (int) ($n_jours / 30); // 3,5 => 3
-                                    $reste = $n_jours % 30; // reste de n_jours / 30;
-                                    // echo $n_mois;
-                                    // echo  ceil($n_mois);
-                                    $n_mois_a_payer = ceil(($n_jours / 30)); // 1,22=>2
-                                    if ($reste < 7) $n_mois_a_payer -= 1;
-                                    echo "$n_mois Mois et $reste jours  <br> A payer :" . $n_mois_a_payer . "Mois";
-                                    ?></td>
-                                <?php $duree = Paiement::date_diff(date('Y-m-d'), $p->date_a);
-                                $classe = "bg-success";
-                                $retard = "il reste  $duree j";
-                                if ($duree < 0) {
-                                    $classe = "bg-danger text-white";
-                                    $retard = "retard de $duree j";
-                                }
+                                        $n_mois = (int) ($n_jours / 30); // 3,5 => 3
+                                        $reste = $n_jours % 30; // reste de n_jours / 30;
+                                        // echo $n_mois;
+                                        // echo  ceil($n_mois);
+                                        $n_mois_a_payer = ceil(($n_jours / 30)); // 1,22=>2
+                                        if ($reste < 7) $n_mois_a_payer -= 1;
+                                        echo "$n_mois Mois et $reste jours  <br> A payer :" . $n_mois_a_payer . "Mois";
+                                        ?></td>
 
-                                ?>
-                                <td class="<?= $classe ?>">
-                                    <?= $retard ?>
+                                    <td class="<?= $classe ?>">
+                                        <?= $retard ?>
 
-                                </td>
-                                <td><?= $p->tarif_mois ?></td>
-                                <td><?= $p->remise ?></td>
-                                <td><?= ($p->tarif_mois * $n_mois_a_payer) * (1 - $p->remise / 100); ?></td>
+                                    </td>
+                                    <td><?= $p->tarif_mois ?></td>
+                                    <td><?= $p->remise ?></td>
+                                    <td><?= ($p->tarif_mois * $n_mois_a_payer) * (1 - $p->remise / 100); ?></td>
 
-                                <td><a onclick="return confirm('supprimer? ')" href="controller.php?action=delete&id=<?= $p->id ?>" class="btn btn-sm btn-danger">S</a>
-                                    <a href="_form.php?id=<?= $p->id ?>" class="btn btn-sm btn-warning">M</a>
-                                    <a href="show.php?id=<?= $p->id ?>" class="btn btn-sm btn-info">C</a></td>
-                            </tr>
-                        <?php } ?>
+                                    <td><a onclick="return confirm('supprimer? ')" href="controller.php?action=delete&id=<?= $p->id ?>" class="btn btn-sm btn-danger">S</a>
+                                        <a href="_form.php?id=<?= $p->id ?>" class="btn btn-sm btn-warning">M</a>
+                                        <a href="show.php?id=<?= $p->id ?>" class="btn btn-sm btn-info">C</a></td>
+                                </tr>
+                        <?php }
+                        } ?>
 
                     </tbody>
                 </table>

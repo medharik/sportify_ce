@@ -12,8 +12,13 @@ class User extends Idao
     public $passe;
     public $email;
     public $role;
-    function __construct($id, $login, $mail, $passe)
+
+    function __construct($id = null, $login = "", $email = "", $passe = "")
     {
+        $this->id = $id;
+        $this->login = $login;
+        $this->email = $email;
+        $this->passe = $passe;
     }
 
     public static function verifier($login, $passe, $url_login)
@@ -36,7 +41,7 @@ class User extends Idao
                 die();
             }
         } catch (PDOException $e) {
-            die("erreur de  recuperation dans  users dans  la base de donnees " . $e->getMessage());
+            die("erreur de  recuperation dans  users, dans  la base de donnees " . $e->getMessage());
         }
     }
 }

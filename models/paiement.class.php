@@ -42,4 +42,20 @@ class Paiement extends Idao
             die("erreur de  recuperation dans  la base de donnees " . $e->getMessage());
         }
     }
+    public static  function last_paie()
+    {
+        try {
+            $rp = self::$cnx->prepare(" SELECT * FROM paiements WHERE id IN (
+                SELECT  max(id) FROM paiements
+                 GROUP BY abonne_id
+                  )");
+            // echo "select * from " . self::$table . " where $nom_id=$id ";
+            $rp->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, static::$class);
+            $rp->execute();
+            $resultat =  $rp->fetchAll();
+            return $resultat;
+        } catch (PDOException $e) {
+            die("erreur de  recuperation dans  la base de donnees " . $e->getMessage());
+        }
+    }
 }

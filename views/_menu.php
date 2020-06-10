@@ -25,9 +25,10 @@ User::verifier($_SESSION['login'], $_SESSION['passe'], "../../login.php");
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Alertes
+
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Paiements</a>
+                    <a class="dropdown-item" href="<?= BASE_URL ?>paiements/alertes.php">Alertes de Paiements</a>
                     <a class="dropdown-item" href="#">A faire</a>
                     <div class="dropdown-divider"></div>
                 </div>

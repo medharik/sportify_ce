@@ -1,0 +1,20 @@
+<!DOCTYPE etudiants [
+<!ELEMENT etudiants(etudiant+)>
+<!ELEMENT etudiant(nom,age,classe?)>
+<!ELEMENT nom(#PCDATA)>
+<!ELEMENT age(#PCDATA)>
+<!ELEMENT classe(#PCDATA)>
+<!ATTLIST etudiant id CDATA  >
+]>
+<?xml version="1.0" encoding="UTF-8"?> 
+<etudiants>	
+		<etudiant id="1">	
+				<nom>ali</nom>
+				<age>19	</age>	
+				 <classe></classe>	
+		</etudiant>
+		<etudiant id="2">	
+				<nom>	rim</nom>
+				<age>23	</age>		
+		</etudiant>
+</etudiants>

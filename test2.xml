@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<etudiants>
+    <etudiant id="1">
+        <nom>ali</nom>
+        <age>19	</age>
+        <classe>bachelor info</classe>
+    </etudiant>
+    <etudiant id="2">
+        <nom>	rim</nom>
+        <age>23	</age>
+    </etudiant>
+    <etudiant id="3">
+        <nom>	kaba</nom>
+        <age>22	</age>
+    </etudiant>
+</etudiants>
